@@ -1,0 +1,99 @@
+tensor3d input      3 224 224
+
+tensor4d w1    96   3  11  11
+tensor3d c1        96  55  55
+tensor3d a1        96  55  55
+tensor3d n1        96  55  55
+tensor3d p1        96  27  27
+convolution 4 4 0 0 input w1 zero c1
+activation relu c1 a1
+normalization a1 n1 2 5 0.0001 0.75
+pooling n1 p1 max 3 3 2 2
+
+subtensor3d p1_1   48  27  27 p1 48  1
+subtensor3d p1_2   48  27  27 p1 48 48 
+tensor4d w2   128  48   5   5
+tensor3d c2       256  27  27
+tensor3d a2       256  27  27
+tensor3d n2       256  27  27
+tensor3d p2       256  13  13
+subtensor3d c2_1  128  27  27 c2 128   1
+subtensor3d c2_2  128  27  27 c2 128 128
+subtensor3d a2_1  128  27  27 a2 128   1
+subtensor3d a2_2  128  27  27 a2 128 128
+subtensor3d n2_1  128  27  27 n2 128   1
+subtensor3d n2_2  128  27  27 n2 128 128
+subtensor3d p2_1  128  13  13 p2 128   1
+subtensor3d p2_2  128  13  13 p2 128 128
+convolution 1 1 2 2 p1_1 w2 one c2_1
+convolution 1 1 2 2 p1_2 w2 one c2_2
+activation relu c2_1 a2_1
+activation relu c2_2 a2_2
+normalization a2_1 n2_1 2 5 0.0001 0.75
+normalization a2_2 n2_2 2 5 0.0001 0.75
+pooling n2_1 p2_1 max 3 3 2 2
+pooling n2_2 p2_2 max 3 3 2 2
+
+tensor4d w3   384 256   3   3
+tensor3d c3       384  13  13
+tensor3d a3       384  13  13
+convolution 1 1 1 1 p2 w3 zero c3
+activation relu c3 a3
+
+subtensor3d a3_1  192 13 13 a3 192   1
+subtensor3d a3_2  192 13 13 a3 192 192
+tensor4d w4  192  192  3   3
+tensor3d c4       384 13  13
+tensor3d a4       384 13  13
+subtensor3d c4_1  192 13  13 c4 192   1
+subtensor3d c4_2  192 13  13 c4 192 192
+subtensor3d a4_1  192 13  13 a4 192   1
+subtensor3d a4_2  192 13  13 a4 192 192
+convolution 1 1 1 1 a3_1 w4 one c4_1
+convolution 1 1 1 1 a3_2 w4 one c4_2
+activation relu c4_1 a4_1
+activation relu c4_2 a4_2 
+
+tensor4d w5  128   192   3  3
+tensor3d c5        256  13 13
+tensor3d a5        256  13 13
+tensor3d p5        256   6  6
+subtensor3d c5_1   128  13 13 c5 128   1
+subtensor3d c5_2   128  13 13 c5 128 128
+subtensor3d a5_1   128  13 13 a5 128   1
+subtensor3d a5_2   128  13 13 a5 128 128
+subtensor3d p5_1   128   6  6 p5 128   1
+subtensor3d p5_2   128   6  6 p5 128 128
+convolution 1 1 1 1 a4_1 w5 one c5_1
+convolution 1 1 1 1 a4_2 w5 one c5_2
+activation relu c5_1 a5_1
+activation relu c5_2 a5_2
+pooling a5_1 p5_1 max 3 3 2 2
+pooling a5_2 p5_2 max 3 3 2 2
+
+tensor1d wfc1 9216
+tensor1d fc1  4096
+tensor1d ac1  4096
+tensor1d d1   4096
+fullyconnected p5 wfc1  sgd 0.01 0.9 0.0005 one fc1
+activation relu fc1 ac1
+dropout ac1 0.5 d1
+
+tensor1d wfc2 4096
+tensor1d fc2  4096
+tensor1d ac2  4096
+tensor1d d2   4096
+fullyconnected d1 wfc2 sgd 0.01 0.9 0.0005 one fc2
+activation relu fc2 ac2
+dropout ac2 0.5 d2
+
+tensor1d wfc3 4096
+tensor1d fc3 1000
+tensor1d ac3 1000
+tensor1d d3  1000
+fullyconnected d2 wfc3 sgd 0.01 0.9 0.0005 one fc3
+activation relu fc3 ac3
+dropout ac3 0.5 d3
+
+tensor1d output 1000
+softmax ac3 output

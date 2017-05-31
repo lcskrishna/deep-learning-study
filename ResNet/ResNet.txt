@@ -1,0 +1,1353 @@
+tensor3d input       3 224 224
+
+tensor4d w1     64   3   7   7
+tensor3d c1         64 112 112
+tensor3d n1         64 112 112
+tensor3d a1         64 112 112
+convolution 2 2 3 3 input w1 zero c1
+normalization c1 n1
+activation relu n1 a1
+
+tensor3d p1         64  56  56
+pooling  a1 p1 max 3 3 2 2
+
+tensor4d w1_p 256   64   1   1
+tensor3d c1_1      256  56  56
+tensor3d n1_1      256  56  56
+convolution 1 1 0 0 p1 w1_p zero c1_1
+normalization c1_1 n1_1
+
+
+tensor4d w2_1_1  64   64   1    1
+tensor4d w2_2_1  64   64   3    3
+tensor4d w2_3_1 256   64   1    1
+tensor3d c2_1_1       64  56   56
+tensor3d c2_2_1       64  56   56
+tensor3d c2_3_1      256  56   56
+tensor3d n2_1_1       64  56   56
+tensor3d n2_2_1       64  56   56
+tensor3d n2_3_1      256  56   56
+tensor3d a2_1_1       64  56   56
+tensor3d a2_2_1       64  56   56
+tensor3d a2_1        256  56   56
+tensor3d c2_1        256  56   56
+convolution 1 1 0 0 p1 w2_1_1 zero c2_1_1
+normalization c2_1_1 n2_1_1
+activation relu n2_1_1 a2_1_1
+convolution 1 1 1 1 a2_1_1 w2_2_1 zero c2_2_1
+normalization c2_2_1 n2_2_1
+activation relu n2_2_1 a2_2_1
+convolution 1 1 0 0 a2_2_1 w2_3_1 zero c2_3_1
+normalization c2_3_1 n2_3_1
+addition n1_1 n2_3_1 c2_1
+activation relu c2_1 a2_1
+
+
+tensor4d w2_1_2  64  256   1    1
+tensor4d w2_2_2  64   64   3    3
+tensor4d w2_3_2 256   64   1    1
+tensor3d c2_1_2       64  56   56
+tensor3d c2_2_2       64  56   56
+tensor3d c2_3_2      256  56   56
+tensor3d n2_1_2       64  56   56
+tensor3d n2_2_2       64  56   56
+tensor3d n2_3_2      256  56   56
+tensor3d a2_1_2       64  56   56
+tensor3d a2_2_2       64  56   56
+tensor3d a2_2        256  56   56
+tensor3d c2_2        256  56   56
+convolution 1 1 0 0 a2_1 w2_1_2 zero c2_1_2
+normalization c2_1_2 n2_1_2
+activation relu n2_1_2 a2_1_2
+convolution 1 1 1 1 a2_1_2 w2_2_2 zero c2_2_2
+normalization c2_2_2 n2_2_2
+activation relu n2_2_2 a2_2_2
+convolution 1 1 0 0 a2_2_2 w2_3_2 zero c2_3_2
+normalization c2_3_2 n2_3_2
+addition a2_1 n2_3_2 c2_2
+activation relu c2_2 a2_2
+
+
+tensor4d w2_1_3  64  256   1    1
+tensor4d w2_2_3  64   64   3    3
+tensor4d w2_3_3 256   64   1    1
+tensor3d c2_1_3       64  56   56
+tensor3d c2_2_3       64  56   56
+tensor3d c2_3_3      256  56   56
+tensor3d n2_1_3       64  56   56
+tensor3d n2_2_3       64  56   56
+tensor3d n2_3_3      256  56   56
+tensor3d a2_1_3       64  56   56
+tensor3d a2_2_3       64  56   56
+tensor3d a2_3        256  56   56
+tensor3d c2_3        256  56   56
+convolution 1 1 0 0 a2_2 w2_1_3 zero c2_1_3
+normalization c2_1_3 n2_1_3
+activation relu n2_1_3 a2_1_3
+convolution 1 1 1 1 a2_1_3 w2_2_3 zero c2_2_3
+normalization c2_2_3 n2_2_3
+activation relu n2_2_3 a2_2_3
+convolution 1 1 0 0 a2_2_3 w2_3_3 zero c2_3_3
+normalization c2_3_3 n2_3_3
+addition a2_2 n2_3_3 c2_3
+activation relu c2_3 a2_3
+
+
+tensor4d w2     512  256    1   1
+tensor3d c2          512   28  28
+tensor3d n2          512   28  28
+convolution 2 2 0 0 a2_3 w2 zero c2
+normalization c2 n2
+
+
+tensor4d w3_1_1 128  256    1   1
+tensor4d w3_2_1 128  128    3   3
+tensor4d w3_3_1 512  128    1   1
+tensor3d c3_1_1      128   28  28
+tensor3d c3_2_1      128   28  28
+tensor3d c3_3_1      512   28  28
+tensor3d n3_1_1      128   28  28
+tensor3d n3_2_1      128   28  28
+tensor3d n3_3_1      512   28  28
+tensor3d a3_1_1      128   28  28
+tensor3d a3_2_1      128   28  28
+tensor3d a3_1        512   28  28
+tensor3d c3_1        512   28  28
+convolution 2 2 0 0 a2_3 w3_1_1 zero c3_1_1
+normalization c3_1_1 n3_1_1
+activation relu n3_1_1 a3_1_1
+convolution 1 1 1 1 a3_1_1 w3_2_1 zero c3_2_1
+normalization c3_2_1 n3_2_1
+activation relu n3_2_1 a3_2_1
+convolution 1 1 0 0 a3_2_1 w3_3_1 zero c3_3_1
+normalization c3_3_1 n3_3_1
+addition n3_3_1 n2 c3_1
+activation relu c3_1 a3_1
+ 
+
+tensor4d w3_1_2 128  512    1   1
+tensor4d w3_2_2 128  128    3   3
+tensor4d w3_3_2 512  128    1   1
+tensor3d c3_1_2      128   28  28
+tensor3d c3_2_2      128   28  28
+tensor3d c3_3_2      512   28  28
+tensor3d n3_1_2      128   28  28
+tensor3d n3_2_2      128   28  28
+tensor3d n3_3_2      512   28  28
+tensor3d a3_1_2      128   28  28
+tensor3d a3_2_2      128   28  28
+tensor3d a3_2        512   28  28
+tensor3d c3_2        512   28  28
+convolution 1 1 0 0 a3_1 w3_1_2 zero c3_1_2
+normalization c3_1_2 n3_1_2
+activation relu n3_1_2 a3_1_2
+convolution 1 1 1 1 a3_1_2 w3_2_2 zero c3_2_2
+normalization c3_2_2 n3_2_2
+activation relu n3_2_2 a3_2_2
+convolution 1 1 0 0 a3_2_2 w3_3_2 zero c3_3_2
+normalization c3_3_2 n3_3_2
+addition n3_3_2 a3_1 c3_2
+activation relu c3_2 a3_2
+
+
+tensor4d w3_1_3 128  512    1   1
+tensor4d w3_2_3 128  128    3   3
+tensor4d w3_3_3 512  128    1   1
+tensor3d c3_1_3      128   28  28
+tensor3d c3_2_3      128   28  28
+tensor3d c3_3_3      512   28  28
+tensor3d n3_1_3      128   28  28
+tensor3d n3_2_3      128   28  28
+tensor3d n3_3_3      512   28  28
+tensor3d a3_1_3      128   28  28
+tensor3d a3_2_3      128   28  28
+tensor3d a3_3        512   28  28
+tensor3d c3_3        512   28  28
+convolution 1 1 0 0 a3_2 w3_1_3 zero c3_1_3
+normalization c3_1_3 n3_1_3
+activation relu n3_1_3 a3_1_3
+convolution 1 1 1 1 a3_1_3 w3_2_3 zero c3_2_3
+normalization c3_2_3 n3_2_3
+activation relu n3_2_3 a3_2_3
+convolution 1 1 0 0 a3_2_3 w3_3_3 zero c3_3_3
+normalization c3_3_3 n3_3_3
+addition n3_3_3 a3_2 c3_3
+activation relu c3_3 a3_3
+
+
+
+tensor4d w3_1_4 128  512    1   1
+tensor4d w3_2_4 128  128    3   3
+tensor4d w3_3_4 512  128    1   1
+tensor3d c3_1_4      128   28  28
+tensor3d c3_2_4      128   28  28
+tensor3d c3_3_4      512   28  28
+tensor3d n3_1_4      128   28  28
+tensor3d n3_2_4      128   28  28
+tensor3d n3_3_4      512   28  28
+tensor3d a3_1_4      128   28  28
+tensor3d a3_2_4      128   28  28
+tensor3d a3_4        512   28  28
+tensor3d c3_4        512   28  28
+convolution 1 1 0 0 a3_3 w3_1_4 zero c3_1_4
+normalization c3_1_4 n3_1_4
+activation relu n3_1_4 a3_1_4
+convolution 1 1 1 1 a3_1_4 w3_2_4 zero c3_2_4
+normalization c3_2_4 n3_2_4
+activation relu n3_2_4 a3_2_4
+convolution 1 1 0 0 a3_2_4 w3_3_4 zero c3_3_4
+normalization c3_3_4 n3_3_4
+addition n3_3_4 a3_3 c3_4
+activation relu c3_4 a3_4
+
+
+ 
+tensor4d w3_1_5 128  512    1   1
+tensor4d w3_2_5 128  128    3   3
+tensor4d w3_3_5 512  128    1   1
+tensor3d c3_1_5      128   28  28
+tensor3d c3_2_5      128   28  28
+tensor3d c3_3_5      512   28  28
+tensor3d n3_1_5      128   28  28
+tensor3d n3_2_5      128   28  28
+tensor3d n3_3_5      512   28  28
+tensor3d a3_1_5      128   28  28
+tensor3d a3_2_5      128   28  28
+tensor3d a3_5        512   28  28
+tensor3d c3_5        512   28  28
+convolution 1 1 0 0 a3_4 w3_1_5 zero c3_1_5
+normalization c3_1_5 n3_1_5
+activation relu n3_1_5 a3_1_5
+convolution 1 1 1 1 a3_1_5 w3_2_5 zero c3_2_5
+normalization c3_2_5 n3_2_5
+activation relu n3_2_5 a3_2_5
+convolution 1 1 0 0 a3_2_5 w3_3_5 zero c3_3_5
+normalization c3_3_5 n3_3_5
+addition n3_3_5 a3_4 c3_5
+activation relu c3_5 a3_5
+
+
+ 
+tensor4d w3_1_6 128  512    1   1
+tensor4d w3_2_6 128  128    3   3
+tensor4d w3_3_6 512  128    1   1
+tensor3d c3_1_6      128   28  28
+tensor3d c3_2_6      128   28  28
+tensor3d c3_3_6      512   28  28
+tensor3d n3_1_6      128   28  28
+tensor3d n3_2_6      128   28  28
+tensor3d n3_3_6      512   28  28
+tensor3d a3_1_6      128   28  28
+tensor3d a3_2_6      128   28  28
+tensor3d a3_6        512   28  28
+tensor3d c3_6        512   28  28
+convolution 1 1 0 0 a3_5 w3_1_6 zero c3_1_6
+normalization c3_1_6 n3_1_6
+activation relu n3_1_6 a3_1_6
+convolution 1 1 1 1 a3_1_6 w3_2_6 zero c3_2_6
+normalization c3_2_6 n3_2_6
+activation relu n3_2_6 a3_2_6
+convolution 1 1 0 0 a3_2_6 w3_3_6 zero c3_3_6
+normalization c3_3_6 n3_3_6
+addition n3_3_6 a3_5 c3_6
+activation relu c3_6 a3_6
+
+
+ 
+tensor4d w3_1_7 128  512    1   1
+tensor4d w3_2_7 128  128    3   3
+tensor4d w3_3_7 512  128    1   1
+tensor3d c3_1_7      128   28  28
+tensor3d c3_2_7      128   28  28
+tensor3d c3_3_7      512   28  28
+tensor3d n3_1_7      128   28  28
+tensor3d n3_2_7      128   28  28
+tensor3d n3_3_7      512   28  28
+tensor3d a3_1_7      128   28  28
+tensor3d a3_2_7      128   28  28
+tensor3d a3_7        512   28  28
+tensor3d c3_7        512   28  28
+convolution 1 1 0 0 a3_6 w3_1_7 zero c3_1_7
+normalization c3_1_7 n3_1_7
+activation relu n3_1_7 a3_1_7
+convolution 1 1 1 1 a3_1_7 w3_2_7 zero c3_2_7
+normalization c3_2_7 n3_2_7
+activation relu n3_2_7 a3_2_7
+convolution 1 1 0 0 a3_2_7 w3_3_7 zero c3_3_7
+normalization c3_3_7 n3_3_7
+addition n3_3_7 a3_6 c3_7
+activation relu c3_7 a3_7
+
+
+ 
+tensor4d w3_1_8 128  512    1   1
+tensor4d w3_2_8 128  128    3   3
+tensor4d w3_3_8 512  128    1   1
+tensor3d c3_1_8      128   28  28
+tensor3d c3_2_8      128   28  28
+tensor3d c3_3_8      512   28  28
+tensor3d n3_1_8      128   28  28
+tensor3d n3_2_8      128   28  28
+tensor3d n3_3_8      512   28  28
+tensor3d a3_1_8      128   28  28
+tensor3d a3_2_8      128   28  28
+tensor3d a3_8        512   28  28
+tensor3d c3_8        512   28  28
+convolution 1 1 0 0 a3_7 w3_1_8 zero c3_1_8
+normalization c3_1_8 n3_1_8
+activation relu n3_1_8 a3_1_8
+convolution 1 1 1 1 a3_1_8 w3_2_8 zero c3_2_8
+normalization c3_2_8 n3_2_8
+activation relu n3_2_8 a3_2_8
+convolution 1 1 0 0 a3_2_8 w3_3_8 zero c3_3_8
+normalization c3_3_8 n3_3_8
+addition n3_3_8 a3_7 c3_8
+activation relu c3_8 a3_8
+
+tensor4d w3    1024  512    1   1
+tensor3d c3         1024   14  14
+tensor3d n3         1024   14  14
+convolution 2 2 0 0 a3_8 w3 zero c3
+normalization c3 n3
+
+
+tensor4d w4_1_1  256 512    1   1
+tensor4d w4_2_1  256 256    3   3
+tensor4d w4_3_1 1024 256    1   1
+tensor3d c4_1_1      256   14  14
+tensor3d c4_2_1      256   14  14
+tensor3d c4_3_1     1024   14  14
+tensor3d n4_1_1      256   14  14
+tensor3d n4_2_1      256   14  14
+tensor3d n4_3_1     1024   14  14
+tensor3d a4_1_1      256   14  14
+tensor3d a4_2_1      256   14  14
+tensor3d a4_1       1024   14  14
+tensor3d c4_1       1024   14  14
+convolution 2 2 0 0 a3_8 w4_1_1 zero c4_1_1
+normalization c4_1_1 n4_1_1
+activation relu n4_1_1 a4_1_1
+convolution 1 1 1 1 a4_1_1 w4_2_1 zero c4_2_1
+normalization c4_2_1 n4_2_1
+activation relu n4_2_1 a4_2_1
+convolution 1 1 0 0 a4_2_1 w4_3_1 zero c4_3_1
+normalization c4_3_1 n4_3_1
+addition n4_3_1 n3 c4_1
+activation relu c4_1 a4_1
+
+
+tensor4d w4_1_2  256 1024    1   1
+tensor4d w4_2_2  256  256    3   3
+tensor4d w4_3_2 1024  256    1   1
+tensor3d c4_1_2       256   14  14
+tensor3d c4_2_2       256   14  14
+tensor3d c4_3_2      1024   14  14
+tensor3d n4_1_2       256   14  14
+tensor3d n4_2_2       256   14  14
+tensor3d n4_3_2      1024   14  14
+tensor3d a4_1_2       256   14  14
+tensor3d a4_2_2       256   14  14
+tensor3d a4_2        1024   14  14
+tensor3d c4_2        1024   14  14
+convolution 1 1 0 0 a4_1 w4_1_2 zero c4_1_2
+normalization c4_1_2 n4_1_2
+activation relu n4_1_2 a4_1_2
+convolution 1 1 1 1 a4_1_2 w4_2_2 zero c4_2_2
+normalization c4_2_2 n4_2_2
+activation relu n4_2_2 a4_2_2
+convolution 1 1 0 0 a4_2_2 w4_3_2 zero c4_3_2
+normalization c4_3_2 n4_3_2
+addition n4_3_2 a4_1 c4_2
+activation relu c4_2 a4_2
+
+
+tensor4d w4_1_3  256 1024    1   1
+tensor4d w4_2_3  256  256    3   3
+tensor4d w4_3_3 1024  256    1   1
+tensor3d c4_1_3       256   14  14
+tensor3d c4_2_3       256   14  14
+tensor3d c4_3_3      1024   14  14
+tensor3d n4_1_3       256   14  14
+tensor3d n4_2_3       256   14  14
+tensor3d n4_3_3      1024   14  14
+tensor3d a4_1_3       256   14  14
+tensor3d a4_2_3       256   14  14
+tensor3d a4_3        1024   14  14
+tensor3d c4_3        1024   14  14
+convolution 1 1 0 0 a4_2 w4_1_3 zero c4_1_3
+normalization c4_1_3 n4_1_3
+activation relu n4_1_3 a4_1_3
+convolution 1 1 1 1 a4_1_3 w4_2_3 zero c4_2_3
+normalization c4_2_3 n4_2_3
+activation relu n4_2_3 a4_2_3
+convolution 1 1 0 0 a4_2_3 w4_3_3 zero c4_3_3
+normalization c4_3_3 n4_3_3
+addition n4_3_3 a4_2 c4_3
+activation relu c4_3 a4_3
+
+
+ 
+tensor4d w4_1_4  256 1024    1   1
+tensor4d w4_2_4  256  256    3   3
+tensor4d w4_3_4 1024  256    1   1
+tensor3d c4_1_4       256   14  14
+tensor3d c4_2_4       256   14  14
+tensor3d c4_3_4      1024   14  14
+tensor3d n4_1_4       256   14  14
+tensor3d n4_2_4       256   14  14
+tensor3d n4_3_4      1024   14  14
+tensor3d a4_1_4       256   14  14
+tensor3d a4_2_4       256   14  14
+tensor3d a4_4        1024   14  14
+tensor3d c4_4        1024   14  14
+convolution 1 1 0 0 a4_3 w4_1_4 zero c4_1_4
+normalization c4_1_4 n4_1_4
+activation relu n4_1_4 a4_1_4
+convolution 1 1 1 1 a4_1_4 w4_2_4 zero c4_2_4
+normalization c4_2_4 n4_2_4
+activation relu n4_2_4 a4_2_4
+convolution 1 1 0 0 a4_2_4 w4_3_4 zero c4_3_4
+normalization c4_3_4 n4_3_4
+addition n4_3_4 a4_3 c4_4
+activation relu c4_4 a4_4
+
+
+ 
+tensor4d w4_1_5  256 1024    1   1
+tensor4d w4_2_5  256  256    3   3
+tensor4d w4_3_5 1024  256    1   1
+tensor3d c4_1_5       256   14  14
+tensor3d c4_2_5       256   14  14
+tensor3d c4_3_5      1024   14  14
+tensor3d n4_1_5       256   14  14
+tensor3d n4_2_5       256   14  14
+tensor3d n4_3_5      1024   14  14
+tensor3d a4_1_5       256   14  14
+tensor3d a4_2_5       256   14  14
+tensor3d a4_5        1024   14  14
+tensor3d c4_5        1024   14  14
+convolution 1 1 0 0 a4_4 w4_1_5 zero c4_1_5
+normalization c4_1_5 n4_1_5
+activation relu n4_1_5 a4_1_5
+convolution 1 1 1 1 a4_1_5 w4_2_5 zero c4_2_5
+normalization c4_2_5 n4_2_5
+activation relu n4_2_5 a4_2_5
+convolution 1 1 0 0 a4_2_5 w4_3_5 zero c4_3_5
+normalization c4_3_5 n4_3_5
+addition n4_3_5 a4_4 c4_5
+activation relu c4_5 a4_5
+
+
+ 
+tensor4d w4_1_6  256 1024    1   1
+tensor4d w4_2_6  256  256    3   3
+tensor4d w4_3_6 1024  256    1   1
+tensor3d c4_1_6       256   14  14
+tensor3d c4_2_6       256   14  14
+tensor3d c4_3_6      1024   14  14
+tensor3d n4_1_6       256   14  14
+tensor3d n4_2_6       256   14  14
+tensor3d n4_3_6      1024   14  14
+tensor3d a4_1_6       256   14  14
+tensor3d a4_2_6       256   14  14
+tensor3d a4_6        1024   14  14
+tensor3d c4_6        1024   14  14
+convolution 1 1 0 0 a4_5 w4_1_6 zero c4_1_6
+normalization c4_1_6 n4_1_6
+activation relu n4_1_6 a4_1_6
+convolution 1 1 1 1 a4_1_6 w4_2_6 zero c4_2_6
+normalization c4_2_6 n4_2_6
+activation relu n4_2_6 a4_2_6
+convolution 1 1 0 0 a4_2_6 w4_3_6 zero c4_3_6
+normalization c4_3_6 n4_3_6
+addition n4_3_6 a4_5 c4_6
+activation relu c4_6 a4_6
+
+
+ 
+tensor4d w4_1_7  256 1024    1   1
+tensor4d w4_2_7  256  256    3   3
+tensor4d w4_3_7 1024  256    1   1
+tensor3d c4_1_7       256   14  14
+tensor3d c4_2_7       256   14  14
+tensor3d c4_3_7      1024   14  14
+tensor3d n4_1_7       256   14  14
+tensor3d n4_2_7       256   14  14
+tensor3d n4_3_7      1024   14  14
+tensor3d a4_1_7       256   14  14
+tensor3d a4_2_7       256   14  14
+tensor3d a4_7        1024   14  14
+tensor3d c4_7        1024   14  14
+convolution 1 1 0 0 a4_6 w4_1_7 zero c4_1_7
+normalization c4_1_7 n4_1_7
+activation relu n4_1_7 a4_1_7
+convolution 1 1 1 1 a4_1_7 w4_2_7 zero c4_2_7
+normalization c4_2_7 n4_2_7
+activation relu n4_2_7 a4_2_7
+convolution 1 1 0 0 a4_2_7 w4_3_7 zero c4_3_7
+normalization c4_3_7 n4_3_7
+addition n4_3_7 a4_6 c4_7
+activation relu c4_7 a4_7
+
+
+ 
+tensor4d w4_1_8  256 1024    1   1
+tensor4d w4_2_8  256  256    3   3
+tensor4d w4_3_8 1024  256    1   1
+tensor3d c4_1_8       256   14  14
+tensor3d c4_2_8       256   14  14
+tensor3d c4_3_8      1024   14  14
+tensor3d n4_1_8       256   14  14
+tensor3d n4_2_8       256   14  14
+tensor3d n4_3_8      1024   14  14
+tensor3d a4_1_8       256   14  14
+tensor3d a4_2_8       256   14  14
+tensor3d a4_8        1024   14  14
+tensor3d c4_8        1024   14  14
+convolution 1 1 0 0 a4_7 w4_1_8 zero c4_1_8
+normalization c4_1_8 n4_1_8
+activation relu n4_1_8 a4_1_8
+convolution 1 1 1 1 a4_1_8 w4_2_8 zero c4_2_8
+normalization c4_2_8 n4_2_8
+activation relu n4_2_8 a4_2_8
+convolution 1 1 0 0 a4_2_8 w4_3_8 zero c4_3_8
+normalization c4_3_8 n4_3_8
+addition n4_3_8 a4_7 c4_8
+activation relu c4_8 a4_8
+
+
+ 
+tensor4d w4_1_9  256 1024    1   1
+tensor4d w4_2_9  256  256    3   3
+tensor4d w4_3_9 1024  256    1   1
+tensor3d c4_1_9       256   14  14
+tensor3d c4_2_9       256   14  14
+tensor3d c4_3_9      1024   14  14
+tensor3d n4_1_9       256   14  14
+tensor3d n4_2_9       256   14  14
+tensor3d n4_3_9      1024   14  14
+tensor3d a4_1_9       256   14  14
+tensor3d a4_2_9       256   14  14
+tensor3d a4_9        1024   14  14
+tensor3d c4_9        1024   14  14
+convolution 1 1 0 0 a4_8 w4_1_9 zero c4_1_9
+normalization c4_1_9 n4_1_9
+activation relu n4_1_9 a4_1_9
+convolution 1 1 1 1 a4_1_9 w4_2_9 zero c4_2_9
+normalization c4_2_9 n4_2_9
+activation relu n4_2_9 a4_2_9
+convolution 1 1 0 0 a4_2_9 w4_3_9 zero c4_3_9
+normalization c4_3_9 n4_3_9
+addition n4_3_9 a4_8 c4_9
+activation relu c4_9 a4_9
+
+
+ 
+tensor4d w4_1_10  256 1024    1   1
+tensor4d w4_2_10  256  256    3   3
+tensor4d w4_3_10 1024  256    1   1
+tensor3d c4_1_10       256   14  14
+tensor3d c4_2_10       256   14  14
+tensor3d c4_3_10      1024   14  14
+tensor3d n4_1_10       256   14  14
+tensor3d n4_2_10       256   14  14
+tensor3d n4_3_10      1024   14  14
+tensor3d a4_1_10       256   14  14
+tensor3d a4_2_10       256   14  14
+tensor3d a4_10        1024   14  14
+tensor3d c4_10        1024   14  14
+convolution 1 1 0 0 a4_9 w4_1_10 zero c4_1_10
+normalization c4_1_10 n4_1_10
+activation relu n4_1_10 a4_1_10
+convolution 1 1 1 1 a4_1_10 w4_2_10 zero c4_2_10
+normalization c4_2_10 n4_2_10
+activation relu n4_2_10 a4_2_10
+convolution 1 1 0 0 a4_2_10 w4_3_10 zero c4_3_10
+normalization c4_3_10 n4_3_10
+addition n4_3_10 a4_9 c4_10
+activation relu c4_10 a4_10
+
+
+ 
+tensor4d w4_1_11  256 1024    1   1
+tensor4d w4_2_11  256  256    3   3
+tensor4d w4_3_11 1024  256    1   1
+tensor3d c4_1_11       256   14  14
+tensor3d c4_2_11       256   14  14
+tensor3d c4_3_11      1024   14  14
+tensor3d n4_1_11       256   14  14
+tensor3d n4_2_11       256   14  14
+tensor3d n4_3_11      1024   14  14
+tensor3d a4_1_11       256   14  14
+tensor3d a4_2_11       256   14  14
+tensor3d a4_11        1024   14  14
+tensor3d c4_11        1024   14  14
+convolution 1 1 0 0 a4_10 w4_1_11 zero c4_1_11
+normalization c4_1_11 n4_1_11
+activation relu n4_1_11 a4_1_11
+convolution 1 1 1 1 a4_1_11 w4_2_11 zero c4_2_11
+normalization c4_2_11 n4_2_11
+activation relu n4_2_11 a4_2_11
+convolution 1 1 0 0 a4_2_11 w4_3_11 zero c4_3_11
+normalization c4_3_11 n4_3_11
+addition n4_3_11 a4_10 c4_11
+activation relu c4_11 a4_11
+
+
+ 
+tensor4d w4_1_12  256 1024    1   1
+tensor4d w4_2_12  256  256    3   3
+tensor4d w4_3_12 1024  256    1   1
+tensor3d c4_1_12       256   14  14
+tensor3d c4_2_12       256   14  14
+tensor3d c4_3_12      1024   14  14
+tensor3d n4_1_12       256   14  14
+tensor3d n4_2_12       256   14  14
+tensor3d n4_3_12      1024   14  14
+tensor3d a4_1_12       256   14  14
+tensor3d a4_2_12       256   14  14
+tensor3d a4_12        1024   14  14
+tensor3d c4_12        1024   14  14
+convolution 1 1 0 0 a4_11 w4_1_12 zero c4_1_12
+normalization c4_1_12 n4_1_12
+activation relu n4_1_12 a4_1_12
+convolution 1 1 1 1 a4_1_12 w4_2_12 zero c4_2_12
+normalization c4_2_12 n4_2_12
+activation relu n4_2_12 a4_2_12
+convolution 1 1 0 0 a4_2_12 w4_3_12 zero c4_3_12
+normalization c4_3_12 n4_3_12
+addition n4_3_12 a4_11 c4_12
+activation relu c4_12 a4_12
+
+
+ 
+tensor4d w4_1_13  256 1024    1   1
+tensor4d w4_2_13  256  256    3   3
+tensor4d w4_3_13 1024  256    1   1
+tensor3d c4_1_13       256   14  14
+tensor3d c4_2_13       256   14  14
+tensor3d c4_3_13      1024   14  14
+tensor3d n4_1_13       256   14  14
+tensor3d n4_2_13       256   14  14
+tensor3d n4_3_13      1024   14  14
+tensor3d a4_1_13       256   14  14
+tensor3d a4_2_13       256   14  14
+tensor3d a4_13        1024   14  14
+tensor3d c4_13        1024   14  14
+convolution 1 1 0 0 a4_12 w4_1_13 zero c4_1_13
+normalization c4_1_13 n4_1_13
+activation relu n4_1_13 a4_1_13
+convolution 1 1 1 1 a4_1_13 w4_2_13 zero c4_2_13
+normalization c4_2_13 n4_2_13
+activation relu n4_2_13 a4_2_13
+convolution 1 1 0 0 a4_2_13 w4_3_13 zero c4_3_13
+normalization c4_3_13 n4_3_13
+addition n4_3_13 a4_12 c4_13
+activation relu c4_13 a4_13
+
+
+ 
+tensor4d w4_1_14  256 1024    1   1
+tensor4d w4_2_14  256  256    3   3
+tensor4d w4_3_14 1024  256    1   1
+tensor3d c4_1_14       256   14  14
+tensor3d c4_2_14       256   14  14
+tensor3d c4_3_14      1024   14  14
+tensor3d n4_1_14       256   14  14
+tensor3d n4_2_14       256   14  14
+tensor3d n4_3_14      1024   14  14
+tensor3d a4_1_14       256   14  14
+tensor3d a4_2_14       256   14  14
+tensor3d a4_14        1024   14  14
+tensor3d c4_14        1024   14  14
+convolution 1 1 0 0 a4_13 w4_1_14 zero c4_1_14
+normalization c4_1_14 n4_1_14
+activation relu n4_1_14 a4_1_14
+convolution 1 1 1 1 a4_1_14 w4_2_14 zero c4_2_14
+normalization c4_2_14 n4_2_14
+activation relu n4_2_14 a4_2_14
+convolution 1 1 0 0 a4_2_14 w4_3_14 zero c4_3_14
+normalization c4_3_14 n4_3_14
+addition n4_3_14 a4_13 c4_14
+activation relu c4_14 a4_14
+
+
+ 
+tensor4d w4_1_15  256 1024    1   1
+tensor4d w4_2_15  256  256    3   3
+tensor4d w4_3_15 1024  256    1   1
+tensor3d c4_1_15       256   14  14
+tensor3d c4_2_15       256   14  14
+tensor3d c4_3_15      1024   14  14
+tensor3d n4_1_15       256   14  14
+tensor3d n4_2_15       256   14  14
+tensor3d n4_3_15      1024   14  14
+tensor3d a4_1_15       256   14  14
+tensor3d a4_2_15       256   14  14
+tensor3d a4_15        1024   14  14
+tensor3d c4_15        1024   14  14
+convolution 1 1 0 0 a4_14 w4_1_15 zero c4_1_15
+normalization c4_1_15 n4_1_15
+activation relu n4_1_15 a4_1_15
+convolution 1 1 1 1 a4_1_15 w4_2_15 zero c4_2_15
+normalization c4_2_15 n4_2_15
+activation relu n4_2_15 a4_2_15
+convolution 1 1 0 0 a4_2_15 w4_3_15 zero c4_3_15
+normalization c4_3_15 n4_3_15
+addition n4_3_15 a4_14 c4_15
+activation relu c4_15 a4_15
+
+
+ 
+tensor4d w4_1_16  256 1024    1   1
+tensor4d w4_2_16  256  256    3   3
+tensor4d w4_3_16 1024  256    1   1
+tensor3d c4_1_16       256   14  14
+tensor3d c4_2_16       256   14  14
+tensor3d c4_3_16      1024   14  14
+tensor3d n4_1_16       256   14  14
+tensor3d n4_2_16       256   14  14
+tensor3d n4_3_16      1024   14  14
+tensor3d a4_1_16       256   14  14
+tensor3d a4_2_16       256   14  14
+tensor3d a4_16        1024   14  14
+tensor3d c4_16        1024   14  14
+convolution 1 1 0 0 a4_15 w4_1_16 zero c4_1_16
+normalization c4_1_16 n4_1_16
+activation relu n4_1_16 a4_1_16
+convolution 1 1 1 1 a4_1_16 w4_2_16 zero c4_2_16
+normalization c4_2_16 n4_2_16
+activation relu n4_2_16 a4_2_16
+convolution 1 1 0 0 a4_2_16 w4_3_16 zero c4_3_16
+normalization c4_3_16 n4_3_16
+addition n4_3_16 a4_15 c4_16
+activation relu c4_16 a4_16
+
+
+ 
+tensor4d w4_1_17  256 1024    1   1
+tensor4d w4_2_17  256  256    3   3
+tensor4d w4_3_17 1024  256    1   1
+tensor3d c4_1_17       256   14  14
+tensor3d c4_2_17       256   14  14
+tensor3d c4_3_17      1024   14  14
+tensor3d n4_1_17       256   14  14
+tensor3d n4_2_17       256   14  14
+tensor3d n4_3_17      1024   14  14
+tensor3d a4_1_17       256   14  14
+tensor3d a4_2_17       256   14  14
+tensor3d a4_17        1024   14  14
+tensor3d c4_17        1024   14  14
+convolution 1 1 0 0 a4_16 w4_1_17 zero c4_1_17
+normalization c4_1_17 n4_1_17
+activation relu n4_1_17 a4_1_17
+convolution 1 1 1 1 a4_1_17 w4_2_17 zero c4_2_17
+normalization c4_2_17 n4_2_17
+activation relu n4_2_17 a4_2_17
+convolution 1 1 0 0 a4_2_17 w4_3_17 zero c4_3_17
+normalization c4_3_17 n4_3_17
+addition n4_3_17 a4_16 c4_17
+activation relu c4_17 a4_17
+
+
+ 
+tensor4d w4_1_18  256 1024    1   1
+tensor4d w4_2_18  256  256    3   3
+tensor4d w4_3_18 1024  256    1   1
+tensor3d c4_1_18       256   14  14
+tensor3d c4_2_18       256   14  14
+tensor3d c4_3_18      1024   14  14
+tensor3d n4_1_18       256   14  14
+tensor3d n4_2_18       256   14  14
+tensor3d n4_3_18      1024   14  14
+tensor3d a4_1_18       256   14  14
+tensor3d a4_2_18       256   14  14
+tensor3d a4_18        1024   14  14
+tensor3d c4_18        1024   14  14
+convolution 1 1 0 0 a4_17 w4_1_18 zero c4_1_18
+normalization c4_1_18 n4_1_18
+activation relu n4_1_18 a4_1_18
+convolution 1 1 1 1 a4_1_18 w4_2_18 zero c4_2_18
+normalization c4_2_18 n4_2_18
+activation relu n4_2_18 a4_2_18
+convolution 1 1 0 0 a4_2_18 w4_3_18 zero c4_3_18
+normalization c4_3_18 n4_3_18
+addition n4_3_18 a4_17 c4_18
+activation relu c4_18 a4_18
+
+
+ 
+tensor4d w4_1_19  256 1024    1   1
+tensor4d w4_2_19  256  256    3   3
+tensor4d w4_3_19 1024  256    1   1
+tensor3d c4_1_19       256   14  14
+tensor3d c4_2_19       256   14  14
+tensor3d c4_3_19      1024   14  14
+tensor3d n4_1_19       256   14  14
+tensor3d n4_2_19       256   14  14
+tensor3d n4_3_19      1024   14  14
+tensor3d a4_1_19       256   14  14
+tensor3d a4_2_19       256   14  14
+tensor3d a4_19        1024   14  14
+tensor3d c4_19        1024   14  14
+convolution 1 1 0 0 a4_18 w4_1_19 zero c4_1_19
+normalization c4_1_19 n4_1_19
+activation relu n4_1_19 a4_1_19
+convolution 1 1 1 1 a4_1_19 w4_2_19 zero c4_2_19
+normalization c4_2_19 n4_2_19
+activation relu n4_2_19 a4_2_19
+convolution 1 1 0 0 a4_2_19 w4_3_19 zero c4_3_19
+normalization c4_3_19 n4_3_19
+addition n4_3_19 a4_18 c4_19
+activation relu c4_19 a4_19
+
+
+ 
+tensor4d w4_1_20  256 1024    1   1
+tensor4d w4_2_20  256  256    3   3
+tensor4d w4_3_20 1024  256    1   1
+tensor3d c4_1_20       256   14  14
+tensor3d c4_2_20       256   14  14
+tensor3d c4_3_20      1024   14  14
+tensor3d n4_1_20       256   14  14
+tensor3d n4_2_20       256   14  14
+tensor3d n4_3_20      1024   14  14
+tensor3d a4_1_20       256   14  14
+tensor3d a4_2_20       256   14  14
+tensor3d a4_20        1024   14  14
+tensor3d c4_20        1024   14  14
+convolution 1 1 0 0 a4_19 w4_1_20 zero c4_1_20
+normalization c4_1_20 n4_1_20
+activation relu n4_1_20 a4_1_20
+convolution 1 1 1 1 a4_1_20 w4_2_20 zero c4_2_20
+normalization c4_2_20 n4_2_20
+activation relu n4_2_20 a4_2_20
+convolution 1 1 0 0 a4_2_20 w4_3_20 zero c4_3_20
+normalization c4_3_20 n4_3_20
+addition n4_3_20 a4_19 c4_20
+activation relu c4_20 a4_20
+
+
+ 
+tensor4d w4_1_21  256 1024    1   1
+tensor4d w4_2_21  256  256    3   3
+tensor4d w4_3_21 1024  256    1   1
+tensor3d c4_1_21       256   14  14
+tensor3d c4_2_21       256   14  14
+tensor3d c4_3_21      1024   14  14
+tensor3d n4_1_21       256   14  14
+tensor3d n4_2_21       256   14  14
+tensor3d n4_3_21      1024   14  14
+tensor3d a4_1_21       256   14  14
+tensor3d a4_2_21       256   14  14
+tensor3d a4_21        1024   14  14
+tensor3d c4_21        1024   14  14
+convolution 1 1 0 0 a4_20 w4_1_21 zero c4_1_21
+normalization c4_1_21 n4_1_21
+activation relu n4_1_21 a4_1_21
+convolution 1 1 1 1 a4_1_21 w4_2_21 zero c4_2_21
+normalization c4_2_21 n4_2_21
+activation relu n4_2_21 a4_2_21
+convolution 1 1 0 0 a4_2_21 w4_3_21 zero c4_3_21
+normalization c4_3_21 n4_3_21
+addition n4_3_21 a4_20 c4_21
+activation relu c4_21 a4_21
+
+
+ 
+tensor4d w4_1_22  256 1024    1   1
+tensor4d w4_2_22  256  256    3   3
+tensor4d w4_3_22 1024  256    1   1
+tensor3d c4_1_22       256   14  14
+tensor3d c4_2_22       256   14  14
+tensor3d c4_3_22      1024   14  14
+tensor3d n4_1_22       256   14  14
+tensor3d n4_2_22       256   14  14
+tensor3d n4_3_22      1024   14  14
+tensor3d a4_1_22       256   14  14
+tensor3d a4_2_22       256   14  14
+tensor3d a4_22        1024   14  14
+tensor3d c4_22        1024   14  14
+convolution 1 1 0 0 a4_21 w4_1_22 zero c4_1_22
+normalization c4_1_22 n4_1_22
+activation relu n4_1_22 a4_1_22
+convolution 1 1 1 1 a4_1_22 w4_2_22 zero c4_2_22
+normalization c4_2_22 n4_2_22
+activation relu n4_2_22 a4_2_22
+convolution 1 1 0 0 a4_2_22 w4_3_22 zero c4_3_22
+normalization c4_3_22 n4_3_22
+addition n4_3_22 a4_21 c4_22
+activation relu c4_22 a4_22
+
+
+ 
+tensor4d w4_1_23  256 1024    1   1
+tensor4d w4_2_23  256  256    3   3
+tensor4d w4_3_23 1024  256    1   1
+tensor3d c4_1_23       256   14  14
+tensor3d c4_2_23       256   14  14
+tensor3d c4_3_23      1024   14  14
+tensor3d n4_1_23       256   14  14
+tensor3d n4_2_23       256   14  14
+tensor3d n4_3_23      1024   14  14
+tensor3d a4_1_23       256   14  14
+tensor3d a4_2_23       256   14  14
+tensor3d a4_23        1024   14  14
+tensor3d c4_23        1024   14  14
+convolution 1 1 0 0 a4_22 w4_1_23 zero c4_1_23
+normalization c4_1_23 n4_1_23
+activation relu n4_1_23 a4_1_23
+convolution 1 1 1 1 a4_1_23 w4_2_23 zero c4_2_23
+normalization c4_2_23 n4_2_23
+activation relu n4_2_23 a4_2_23
+convolution 1 1 0 0 a4_2_23 w4_3_23 zero c4_3_23
+normalization c4_3_23 n4_3_23
+addition n4_3_23 a4_22 c4_23
+activation relu c4_23 a4_23
+
+
+ 
+tensor4d w4_1_24  256 1024    1   1
+tensor4d w4_2_24  256  256    3   3
+tensor4d w4_3_24 1024  256    1   1
+tensor3d c4_1_24       256   14  14
+tensor3d c4_2_24       256   14  14
+tensor3d c4_3_24      1024   14  14
+tensor3d n4_1_24       256   14  14
+tensor3d n4_2_24       256   14  14
+tensor3d n4_3_24      1024   14  14
+tensor3d a4_1_24       256   14  14
+tensor3d a4_2_24       256   14  14
+tensor3d a4_24        1024   14  14
+tensor3d c4_24        1024   14  14
+convolution 1 1 0 0 a4_23 w4_1_24 zero c4_1_24
+normalization c4_1_24 n4_1_24
+activation relu n4_1_24 a4_1_24
+convolution 1 1 1 1 a4_1_24 w4_2_24 zero c4_2_24
+normalization c4_2_24 n4_2_24
+activation relu n4_2_24 a4_2_24
+convolution 1 1 0 0 a4_2_24 w4_3_24 zero c4_3_24
+normalization c4_3_24 n4_3_24
+addition n4_3_24 a4_23 c4_24
+activation relu c4_24 a4_24
+
+
+ 
+tensor4d w4_1_25  256 1024    1   1
+tensor4d w4_2_25  256  256    3   3
+tensor4d w4_3_25 1024  256    1   1
+tensor3d c4_1_25       256   14  14
+tensor3d c4_2_25       256   14  14
+tensor3d c4_3_25      1024   14  14
+tensor3d n4_1_25       256   14  14
+tensor3d n4_2_25       256   14  14
+tensor3d n4_3_25      1024   14  14
+tensor3d a4_1_25       256   14  14
+tensor3d a4_2_25       256   14  14
+tensor3d a4_25        1024   14  14
+tensor3d c4_25        1024   14  14
+convolution 1 1 0 0 a4_24 w4_1_25 zero c4_1_25
+normalization c4_1_25 n4_1_25
+activation relu n4_1_25 a4_1_25
+convolution 1 1 1 1 a4_1_25 w4_2_25 zero c4_2_25
+normalization c4_2_25 n4_2_25
+activation relu n4_2_25 a4_2_25
+convolution 1 1 0 0 a4_2_25 w4_3_25 zero c4_3_25
+normalization c4_3_25 n4_3_25
+addition n4_3_25 a4_24 c4_25
+activation relu c4_25 a4_25
+
+
+ 
+tensor4d w4_1_26  256 1024    1   1
+tensor4d w4_2_26  256  256    3   3
+tensor4d w4_3_26 1024  256    1   1
+tensor3d c4_1_26       256   14  14
+tensor3d c4_2_26       256   14  14
+tensor3d c4_3_26      1024   14  14
+tensor3d n4_1_26       256   14  14
+tensor3d n4_2_26       256   14  14
+tensor3d n4_3_26      1024   14  14
+tensor3d a4_1_26       256   14  14
+tensor3d a4_2_26       256   14  14
+tensor3d a4_26        1024   14  14
+tensor3d c4_26        1024   14  14
+convolution 1 1 0 0 a4_25 w4_1_26 zero c4_1_26
+normalization c4_1_26 n4_1_26
+activation relu n4_1_26 a4_1_26
+convolution 1 1 1 1 a4_1_26 w4_2_26 zero c4_2_26
+normalization c4_2_26 n4_2_26
+activation relu n4_2_26 a4_2_26
+convolution 1 1 0 0 a4_2_26 w4_3_26 zero c4_3_26
+normalization c4_3_26 n4_3_26
+addition n4_3_26 a4_25 c4_26
+activation relu c4_26 a4_26
+
+
+ 
+tensor4d w4_1_27  256 1024    1   1
+tensor4d w4_2_27  256  256    3   3
+tensor4d w4_3_27 1024  256    1   1
+tensor3d c4_1_27       256   14  14
+tensor3d c4_2_27       256   14  14
+tensor3d c4_3_27      1024   14  14
+tensor3d n4_1_27       256   14  14
+tensor3d n4_2_27       256   14  14
+tensor3d n4_3_27      1024   14  14
+tensor3d a4_1_27       256   14  14
+tensor3d a4_2_27       256   14  14
+tensor3d a4_27        1024   14  14
+tensor3d c4_27        1024   14  14
+convolution 1 1 0 0 a4_26 w4_1_27 zero c4_1_27
+normalization c4_1_27 n4_1_27
+activation relu n4_1_27 a4_1_27
+convolution 1 1 1 1 a4_1_27 w4_2_27 zero c4_2_27
+normalization c4_2_27 n4_2_27
+activation relu n4_2_27 a4_2_27
+convolution 1 1 0 0 a4_2_27 w4_3_27 zero c4_3_27
+normalization c4_3_27 n4_3_27
+addition n4_3_27 a4_26 c4_27
+activation relu c4_27 a4_27
+
+
+ 
+tensor4d w4_1_28  256 1024    1   1
+tensor4d w4_2_28  256  256    3   3
+tensor4d w4_3_28 1024  256    1   1
+tensor3d c4_1_28       256   14  14
+tensor3d c4_2_28       256   14  14
+tensor3d c4_3_28      1024   14  14
+tensor3d n4_1_28       256   14  14
+tensor3d n4_2_28       256   14  14
+tensor3d n4_3_28      1024   14  14
+tensor3d a4_1_28       256   14  14
+tensor3d a4_2_28       256   14  14
+tensor3d a4_28        1024   14  14
+tensor3d c4_28        1024   14  14
+convolution 1 1 0 0 a4_27 w4_1_28 zero c4_1_28
+normalization c4_1_28 n4_1_28
+activation relu n4_1_28 a4_1_28
+convolution 1 1 1 1 a4_1_28 w4_2_28 zero c4_2_28
+normalization c4_2_28 n4_2_28
+activation relu n4_2_28 a4_2_28
+convolution 1 1 0 0 a4_2_28 w4_3_28 zero c4_3_28
+normalization c4_3_28 n4_3_28
+addition n4_3_28 a4_27 c4_28
+activation relu c4_28 a4_28
+
+
+ 
+tensor4d w4_1_29  256 1024    1   1
+tensor4d w4_2_29  256  256    3   3
+tensor4d w4_3_29 1024  256    1   1
+tensor3d c4_1_29       256   14  14
+tensor3d c4_2_29       256   14  14
+tensor3d c4_3_29      1024   14  14
+tensor3d n4_1_29       256   14  14
+tensor3d n4_2_29       256   14  14
+tensor3d n4_3_29      1024   14  14
+tensor3d a4_1_29       256   14  14
+tensor3d a4_2_29       256   14  14
+tensor3d a4_29        1024   14  14
+tensor3d c4_29        1024   14  14
+convolution 1 1 0 0 a4_28 w4_1_29 zero c4_1_29
+normalization c4_1_29 n4_1_29
+activation relu n4_1_29 a4_1_29
+convolution 1 1 1 1 a4_1_29 w4_2_29 zero c4_2_29
+normalization c4_2_29 n4_2_29
+activation relu n4_2_29 a4_2_29
+convolution 1 1 0 0 a4_2_29 w4_3_29 zero c4_3_29
+normalization c4_3_29 n4_3_29
+addition n4_3_29 a4_28 c4_29
+activation relu c4_29 a4_29
+
+
+ 
+tensor4d w4_1_30  256 1024    1   1
+tensor4d w4_2_30  256  256    3   3
+tensor4d w4_3_30 1024  256    1   1
+tensor3d c4_1_30       256   14  14
+tensor3d c4_2_30       256   14  14
+tensor3d c4_3_30      1024   14  14
+tensor3d n4_1_30       256   14  14
+tensor3d n4_2_30       256   14  14
+tensor3d n4_3_30      1024   14  14
+tensor3d a4_1_30       256   14  14
+tensor3d a4_2_30       256   14  14
+tensor3d a4_30        1024   14  14
+tensor3d c4_30        1024   14  14
+convolution 1 1 0 0 a4_29 w4_1_30 zero c4_1_30
+normalization c4_1_30 n4_1_30
+activation relu n4_1_30 a4_1_30
+convolution 1 1 1 1 a4_1_30 w4_2_30 zero c4_2_30
+normalization c4_2_30 n4_2_30
+activation relu n4_2_30 a4_2_30
+convolution 1 1 0 0 a4_2_30 w4_3_30 zero c4_3_30
+normalization c4_3_30 n4_3_30
+addition n4_3_30 a4_29 c4_30
+activation relu c4_30 a4_30
+
+
+ 
+tensor4d w4_1_31  256 1024    1   1
+tensor4d w4_2_31  256  256    3   3
+tensor4d w4_3_31 1024  256    1   1
+tensor3d c4_1_31       256   14  14
+tensor3d c4_2_31       256   14  14
+tensor3d c4_3_31      1024   14  14
+tensor3d n4_1_31       256   14  14
+tensor3d n4_2_31       256   14  14
+tensor3d n4_3_31      1024   14  14
+tensor3d a4_1_31       256   14  14
+tensor3d a4_2_31       256   14  14
+tensor3d a4_31        1024   14  14
+tensor3d c4_31        1024   14  14
+convolution 1 1 0 0 a4_30 w4_1_31 zero c4_1_31
+normalization c4_1_31 n4_1_31
+activation relu n4_1_31 a4_1_31
+convolution 1 1 1 1 a4_1_31 w4_2_31 zero c4_2_31
+normalization c4_2_31 n4_2_31
+activation relu n4_2_31 a4_2_31
+convolution 1 1 0 0 a4_2_31 w4_3_31 zero c4_3_31
+normalization c4_3_31 n4_3_31
+addition n4_3_31 a4_30 c4_31
+activation relu c4_31 a4_31
+
+
+ 
+tensor4d w4_1_32  256 1024    1   1
+tensor4d w4_2_32  256  256    3   3
+tensor4d w4_3_32 1024  256    1   1
+tensor3d c4_1_32       256   14  14
+tensor3d c4_2_32       256   14  14
+tensor3d c4_3_32      1024   14  14
+tensor3d n4_1_32       256   14  14
+tensor3d n4_2_32       256   14  14
+tensor3d n4_3_32      1024   14  14
+tensor3d a4_1_32       256   14  14
+tensor3d a4_2_32       256   14  14
+tensor3d a4_32        1024   14  14
+tensor3d c4_32        1024   14  14
+convolution 1 1 0 0 a4_31 w4_1_32 zero c4_1_32
+normalization c4_1_32 n4_1_32
+activation relu n4_1_32 a4_1_32
+convolution 1 1 1 1 a4_1_32 w4_2_32 zero c4_2_32
+normalization c4_2_32 n4_2_32
+activation relu n4_2_32 a4_2_32
+convolution 1 1 0 0 a4_2_32 w4_3_32 zero c4_3_32
+normalization c4_3_32 n4_3_32
+addition n4_3_32 a4_31 c4_32
+activation relu c4_32 a4_32
+
+
+ 
+tensor4d w4_1_33  256 1024    1   1
+tensor4d w4_2_33  256  256    3   3
+tensor4d w4_3_33 1024  256    1   1
+tensor3d c4_1_33       256   14  14
+tensor3d c4_2_33       256   14  14
+tensor3d c4_3_33      1024   14  14
+tensor3d n4_1_33       256   14  14
+tensor3d n4_2_33       256   14  14
+tensor3d n4_3_33      1024   14  14
+tensor3d a4_1_33       256   14  14
+tensor3d a4_2_33       256   14  14
+tensor3d a4_33        1024   14  14
+tensor3d c4_33        1024   14  14
+convolution 1 1 0 0 a4_32 w4_1_33 zero c4_1_33
+normalization c4_1_33 n4_1_33
+activation relu n4_1_33 a4_1_33
+convolution 1 1 1 1 a4_1_33 w4_2_33 zero c4_2_33
+normalization c4_2_33 n4_2_33
+activation relu n4_2_33 a4_2_33
+convolution 1 1 0 0 a4_2_33 w4_3_33 zero c4_3_33
+normalization c4_3_33 n4_3_33
+addition n4_3_33 a4_32 c4_33
+activation relu c4_33 a4_33
+
+
+ 
+tensor4d w4_1_34  256 1024    1   1
+tensor4d w4_2_34  256  256    3   3
+tensor4d w4_3_34 1024  256    1   1
+tensor3d c4_1_34       256   14  14
+tensor3d c4_2_34       256   14  14
+tensor3d c4_3_34      1024   14  14
+tensor3d n4_1_34       256   14  14
+tensor3d n4_2_34       256   14  14
+tensor3d n4_3_34      1024   14  14
+tensor3d a4_1_34       256   14  14
+tensor3d a4_2_34       256   14  14
+tensor3d a4_34        1024   14  14
+tensor3d c4_34        1024   14  14
+convolution 1 1 0 0 a4_33 w4_1_34 zero c4_1_34
+normalization c4_1_34 n4_1_34
+activation relu n4_1_34 a4_1_34
+convolution 1 1 1 1 a4_1_34 w4_2_34 zero c4_2_34
+normalization c4_2_34 n4_2_34
+activation relu n4_2_34 a4_2_34
+convolution 1 1 0 0 a4_2_34 w4_3_34 zero c4_3_34
+normalization c4_3_34 n4_3_34
+addition n4_3_34 a4_33 c4_34
+activation relu c4_34 a4_34
+
+
+ 
+tensor4d w4_1_35  256 1024    1   1
+tensor4d w4_2_35  256  256    3   3
+tensor4d w4_3_35 1024  256    1   1
+tensor3d c4_1_35       256   14  14
+tensor3d c4_2_35       256   14  14
+tensor3d c4_3_35      1024   14  14
+tensor3d n4_1_35       256   14  14
+tensor3d n4_2_35       256   14  14
+tensor3d n4_3_35      1024   14  14
+tensor3d a4_1_35       256   14  14
+tensor3d a4_2_35       256   14  14
+tensor3d a4_35        1024   14  14
+tensor3d c4_35        1024   14  14
+convolution 1 1 0 0 a4_34 w4_1_35 zero c4_1_35
+normalization c4_1_35 n4_1_35
+activation relu n4_1_35 a4_1_35
+convolution 1 1 1 1 a4_1_35 w4_2_35 zero c4_2_35
+normalization c4_2_35 n4_2_35
+activation relu n4_2_35 a4_2_35
+convolution 1 1 0 0 a4_2_35 w4_3_35 zero c4_3_35
+normalization c4_3_35 n4_3_35
+addition n4_3_35 a4_34 c4_35
+activation relu c4_35 a4_35
+
+
+ 
+tensor4d w4_1_36  256 1024    1   1
+tensor4d w4_2_36  256  256    3   3
+tensor4d w4_3_36 1024  256    1   1
+tensor3d c4_1_36       256   14  14
+tensor3d c4_2_36       256   14  14
+tensor3d c4_3_36      1024   14  14
+tensor3d n4_1_36       256   14  14
+tensor3d n4_2_36       256   14  14
+tensor3d n4_3_36      1024   14  14
+tensor3d a4_1_36       256   14  14
+tensor3d a4_2_36       256   14  14
+tensor3d a4_36        1024   14  14
+tensor3d c4_36        1024   14  14
+convolution 1 1 0 0 a4_35 w4_1_36 zero c4_1_36
+normalization c4_1_36 n4_1_36
+activation relu n4_1_36 a4_1_36
+convolution 1 1 1 1 a4_1_36 w4_2_36 zero c4_2_36
+normalization c4_2_36 n4_2_36
+activation relu n4_2_36 a4_2_36
+convolution 1 1 0 0 a4_2_36 w4_3_36 zero c4_3_36
+normalization c4_3_36 n4_3_36
+addition n4_3_36 a4_35 c4_36
+activation relu c4_36 a4_36
+
+tensor4d w4    2048 1024    1   1
+tensor3d c4         2048   28  28
+tensor3d n4         2048   28  28
+convolution 2 2 0 0 a4_36 w4 zero c4
+normalization c4 n4
+
+
+tensor4d w5_1_1  512 1024    1   1
+tensor4d w5_2_1  512  512    3   3
+tensor4d w5_3_1 2048  512    1   1
+tensor3d c5_1_1       512    7   7
+tensor3d c5_2_1       512    7   7
+tensor3d c5_3_1      2048    7   7
+tensor3d n5_1_1       512    7   7 
+tensor3d n5_2_1       512    7   7
+tensor3d n5_3_1      2048    7   7
+tensor3d a5_1_1       512    7   7
+tensor3d a5_2_1       512    7   7
+tensor3d a5_1        2048    7   7
+tensor3d c5_1        2048    7   7
+convolution 2 2 0 0 a4_36 w5_1_1 zero c5_1_1
+normalization c5_1_1 n5_1_1
+activation relu n5_1_1 a5_1_1
+convolution 1 1 1 1 a5_1_1 w5_2_1 zero c5_2_1
+normalization c5_2_1 n5_2_1
+activation relu n5_2_1 a5_2_1
+convolution 1 1 0 0 a5_2_1 w5_3_1 zero c5_3_1
+normalization c5_3_1 n5_3_1
+addition n5_3_1 n4 c5_1
+activation relu c5_1 a5_1
+
+
+tensor4d w5_1_2  512 2048    1   1
+tensor4d w5_2_2  512  512    3   3
+tensor4d w5_3_2 2048  512    1   1
+tensor3d c5_1_2       512    7   7
+tensor3d c5_2_2       512    7   7
+tensor3d c5_3_2      2048    7   7
+tensor3d n5_1_2       512    7   7
+tensor3d n5_2_2       512    7   7
+tensor3d n5_3_2      2048    7   7
+tensor3d a5_1_2       512    7   7
+tensor3d a5_2_2       512    7   7
+tensor3d a5_2        2048    7   7
+tensor3d c5_2        2048    7   7
+convolution 1 1 0 0 a5_1 w5_1_2 zero c5_1_2
+normalization c5_1_2 n5_1_2
+activation relu n5_1_2 a5_1_2
+convolution 1 1 1 1 a5_1_2 w5_2_2 zero c5_2_2
+normalization c5_2_2 n5_2_2
+activation relu n5_2_2 a5_2_2
+convolution 1 1 0 0 a5_2_2 w5_3_2 zero c5_3_2
+normalization c5_3_2 n5_3_2
+addition n5_3_2 a5_1 c5_2
+activation relu c5_2 a5_2
+
+
+ 
+tensor4d w5_1_3  512 2048    1   1
+tensor4d w5_2_3  512  512    3   3
+tensor4d w5_3_3 2048  512    1   1
+tensor3d c5_1_3       512    7   7
+tensor3d c5_2_3       512    7   7
+tensor3d c5_3_3      2048    7   7
+tensor3d n5_1_3       512    7   7
+tensor3d n5_2_3       512    7   7
+tensor3d n5_3_3      2048    7   7
+tensor3d a5_1_3       512    7   7
+tensor3d a5_2_3       512    7   7
+tensor3d a5_3        2048    7   7
+tensor3d c5_3        2048    7   7
+convolution 1 1 0 0 a5_2 w5_1_3 zero c5_1_3
+normalization c5_1_3 n5_1_3
+activation relu n5_1_3 a5_1_3
+convolution 1 1 1 1 a5_1_3 w5_2_3 zero c5_2_3
+normalization c5_2_3 n5_2_3
+activation relu n5_2_3 a5_2_3
+convolution 1 1 0 0 a5_2_3 w5_3_3 zero c5_3_3
+normalization c5_3_3 n5_3_3
+addition n5_3_3 a5_2 c5_3
+activation relu c5_3 a5_3
+
+tensor3d  p5         2048    1   1 
+pooling  a5_3 p5 avg 7 7 1 1
+
+tensor1d wfc 2048
+tensor1d fc 1000
+fullyconnected p5 wfc sgd 0.1 0.9 0.0001 zero fc
+
+tensor1d output 1000
+softmax fc output 
+
+
+
+ 
+
+
+
+  
+
+
+
+
+
+
+
+
+
