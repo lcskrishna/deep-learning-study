@@ -1244,8 +1244,8 @@ addition n4_3_36 a4_35 c4_36
 activation relu c4_36 a4_36
 
 tensor4d w4    2048 1024    1   1
-tensor3d c4         2048   28  28
-tensor3d n4         2048   28  28
+tensor3d c4         2048    7   7
+tensor3d n4         2048    7   7
 convolution 2 2 0 0 a4_36 w4 zero c4
 normalization c4 n4
 
